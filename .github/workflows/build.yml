@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: "3.11"
           cache: "pip"
-          cache-dependency-path: klip-app/backend/requirements.txt
+          cache-dependency-path: backend/requirements.txt
 
       - name: Install FFmpeg
         run: |
@@ -29,17 +29,17 @@ jobs:
           sudo apt-get install -y ffmpeg
 
       - name: Install Python dependencies
-        working-directory: klip-app/backend
+        working-directory: backend
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
       - name: Compile check (syntax)
-        working-directory: klip-app/backend
+        working-directory: backend
         run: python -m py_compile main.py style_extractor.py video_editor.py
 
       - name: Import smoke test (catches import/wiring errors)
-        working-directory: klip-app/backend
+        working-directory: backend
         run: python -c "import main; print('FastAPI app loaded OK:', main.app.title)"
 
   frontend:
@@ -56,11 +56,11 @@ jobs:
           node-version: "20"
 
       - name: JS syntax check
-        working-directory: klip-app/frontend
+        working-directory: frontend
         run: node --check app.js
 
       - name: Verify required files exist
-        working-directory: klip-app/frontend
+        working-directory: frontend
         run: |
           test -f index.html
           test -f style.css
